@@ -1,17 +1,16 @@
 from app import db
+from datetime import datetime
 
 """ Models go here """
-
-prompt_entries = db.Table('prompt_entries', db.metadata,
-  db.Column('entry_id', db.Integer, db.ForeignKey('entry.id')),
-  db.Column('prompt_id', db.Integer, db.ForeignKey('prompt.id')))
 
 class Entry(db.Model):
   __tablename__ = 'entry'
   id = db.Column(db.Integer, primary_key=True)
-  user_id = db.Column(db.String(128), index=True)
-  prompt = db.relationship('Prompt', secondary=prompt_entries, backref='prompt')
+  user_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
+  prompt_id = db.Column(db.Integer, db.ForeignKey('prompt.id'))
   response = db.Column(db.String(5000))
+
+  prompt = db.relationship('Prompt', backref='prompt_id')
 
   def __repr__(self):
     return '<Entry {}>'.format(self.id)
@@ -27,8 +26,16 @@ class Prompt(db.Model):
 class Gratitude(db.Model):
   __tablename__ = 'gratitude'
   id = db.Column(db.Integer, primary_key=True)
-  user_id = db.Column(db.String(128), index=True)
+  user_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
   response = db.Column(db.String(1000))
 
   def __repr__(self):
     return '<Gratitude {}>'.format(self.id)
+
+class User(db.Model):
+  __tablename__ = 'user'
+  id = db.Column(db.Integer, primary_key=True)
+  firebase_id = db.Column(db.String(128), unique=True)
+  created_at = db.Column(db.DateTime, default=datetime.now)
+  entries = db.relationship('Entry', backref='user')
+  grats = db.relationship('Gratitude', backref='user')
