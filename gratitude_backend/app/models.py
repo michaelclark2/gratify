@@ -39,3 +39,6 @@ class User(db.Model):
   created_at = db.Column(db.DateTime, default=datetime.now)
   entries = db.relationship('Entry', backref='user')
   grats = db.relationship('Gratitude', backref='user')
+
+  def as_dict(self):
+    return {c.name: getattr(self, c.name) for c in self.__table__.columns}

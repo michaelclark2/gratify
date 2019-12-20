@@ -1,16 +1,16 @@
+from flask import json
 from app import app
 from app.models import Entry, Prompt, Gratitude, User
+from app.schemas import UserSchema, EntrySchema, PromptSchema, GratitudeSchema
 
 @app.route('/')
 @app.route('/index')
 def index():
   return 'ayelmao'
 
-@app.route('/users')
+@app.route('/users', methods=['GET'])
 def users():
-  user = User.query.all()[0]
-  user_entries = user.entries
-  user_grats = user.grats
+  user_schema = UserSchema()
+  users = User.query.all()
 
-  return user.firebase_id + user_entries[0].prompt.text + user_grats[0].response
-
+  return user_schema.dumps(users, many=True)
