@@ -40,3 +40,13 @@ def get_user_by_firebase_id():
   else:
     raise NotFound("Could not find user with firebase_id of '{}'".format(fb_id))
 
+@app.route('/api/users', methods=['POST'])
+def add_new_user():
+  fb_id = json.loads(request.data)['firebase_id']
+  try:
+    new_user = User(firebase_id=fb_id)
+    db.session.add(new_user)
+    db.session.commit()
+    return 'Successfully added new user with id of {}'.format(new_user.id)
+  except Exception as e:
+    raise e
