@@ -28,7 +28,7 @@ def handle_not_found(error):
 def index():
   return 'ayelmao'
 
-@app.route('/api/me', methods=['GET'])
+@app.route('/api/users/me', methods=['GET'])
 def get_user_by_firebase_id():
   user_schema = UserSchema()
 
