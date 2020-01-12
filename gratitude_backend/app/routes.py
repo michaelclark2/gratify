@@ -50,3 +50,10 @@ def add_new_user():
     return 'Successfully added new user with id of {}'.format(new_user.id)
   except Exception as e:
     raise e
+
+@app.route('/api/users/<user_id>', methods=['PUT', 'DELETE'])
+def edit_user(user_id):
+  if request.method == 'DELETE':
+    User.query.filter(User.id == user_id).delete()
+    db.session.commit()
+    return 'Deleting user {}'.format(user_id)
