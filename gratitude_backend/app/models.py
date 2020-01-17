@@ -6,6 +6,7 @@ from datetime import datetime
 class Entry(db.Model):
   __tablename__ = 'entry'
   id = db.Column(db.Integer, primary_key=True)
+  created_at = db.Column(db.DateTime, default=datetime.now)
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
   prompt_id = db.Column(db.Integer, db.ForeignKey('prompt.id'))
   response = db.Column(db.String(5000))
@@ -26,8 +27,10 @@ class Prompt(db.Model):
 class Gratitude(db.Model):
   __tablename__ = 'gratitude'
   id = db.Column(db.Integer, primary_key=True)
+  created_at = db.Column(db.DateTime, default=datetime.now)
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'), index=True)
   response = db.Column(db.String(1000))
+
 
   def __repr__(self):
     return '<Gratitude {}>'.format(self.id)

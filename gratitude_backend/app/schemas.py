@@ -3,7 +3,7 @@ from app.models import User, Gratitude, Prompt, Entry
 
 class GratitudeSchema(ma.ModelSchema):
   class Meta:
-    fields = ('id', 'response')
+    fields = ('id', 'response', 'created_at')
 
   model = Gratitude
 
@@ -15,7 +15,7 @@ class PromptSchema(ma.ModelSchema):
 
 class EntrySchema(ma.ModelSchema):
   class Meta:
-    fields = ('id', 'prompt', 'response')
+    fields = ('id', 'prompt', 'response', 'created_at')
 
   prompt = ma.Nested(PromptSchema)
   model = Entry
