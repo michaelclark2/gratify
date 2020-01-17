@@ -57,3 +57,6 @@ def edit_user(user_id):
     User.query.filter(User.id == user_id).delete()
     db.session.commit()
     return 'Deleting user {}'.format(user_id)
+  elif request.method == 'PUT':
+    user = User.query.get(user_id)
+    return 'Editing user {}'.format(user_id)
