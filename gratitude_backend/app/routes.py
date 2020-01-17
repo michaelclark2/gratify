@@ -109,3 +109,14 @@ def handle_entries(entry_id):
     Entry.query.filter(Entry.id == entry_id).delete()
     db.session.commit()
     return 'Successfully deleted entry {}'.format(entry_id)
+
+@app.route('/api/gratitudes/add', methods=['POST'])
+def add_gratitude():
+  grat = json.loads(request.data)
+  new_grat = Gratitude(response=grat['response'])
+  user = User.query.filter(User.id == grat['user_id']).first()
+  user.grats.append(new_grat)
+  db.session.add(user)
+  db.session.commit()
+  return 'Added gratitude'
+
