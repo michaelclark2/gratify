@@ -40,5 +40,5 @@ class User(db.Model):
   entries = db.relationship('Entry', backref='user')
   grats = db.relationship('Gratitude', backref='user')
 
-  def as_dict(self):
-    return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+  def __repr__(self):
+    return '<User {}>'.format(self.id)

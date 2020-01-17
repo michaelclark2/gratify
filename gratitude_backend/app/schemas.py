@@ -22,7 +22,7 @@ class EntrySchema(ma.ModelSchema):
 
 class UserSchema(ma.Schema):
   class Meta:
-    fields = ('id', 'firebase_id', 'entries', 'grats')
+    fields = ('id', 'firebase_id', 'entries', 'grats', 'created_at')
 
   entries = ma.Nested(EntrySchema, many=True)
   grats = ma.Nested(GratitudeSchema, many=True)
