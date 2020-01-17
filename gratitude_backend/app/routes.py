@@ -76,3 +76,36 @@ def get_prompt_by_id(prompt_id):
     return prompt_schema.dumps(prompt)
   else:
     raise NotFound("Could not find prompt with id of '{}'".format(prompt_id))
+
+@app.route('/api/entries/add', methods=['POST'])
+def add_new_entry():
+  entry_json = json.loads(request.data)
+  new_entry = Entry(response=entry_json['response'])
+
+  user = User.query.filter(User.id == entry_json['user_id']).first()
+  prompt = Prompt.query.filter(Prompt.id == entry_json['prompt_id']).first()
+  new_entry.user = user
+  new_entry.prompt = prompt
+
+  db.session.add(new_entry)
+  db.session.commit()
+  return 'Success'
+
+@app.route('/api/entries/<entry_id>', methods=['GET', 'PUT', 'DELETE'])
+def handle_entries(entry_id):
+  if request.method == 'GET':
+    entry_schema = EntrySchema()
+    entry = Entry.query.filter(Entry.id == entry_id).first()
+    return entry_schema.dumps(entry)
+
+  elif request.method == 'PUT':
+    entry = Entry.query.filter(Entry.id == entry_id).first()
+    entry.response = json.loads(request.data)['response']
+    db.session.add(entry)
+    db.session.commit()
+    return 'Successfully edited entry {}'.format(entry.id)
+
+  elif request.method == 'DELETE':
+    Entry.query.filter(Entry.id == entry_id).delete()
+    db.session.commit()
+    return 'Successfully deleted entry {}'.format(entry_id)
