@@ -60,3 +60,19 @@ def edit_user(user_id):
   elif request.method == 'PUT':
     user = User.query.get(user_id)
     return 'Editing user {}'.format(user_id)
+
+@app.route('/api/prompts')
+def get_all_prompts():
+  prompt_schema = PromptSchema()
+  prompts = Prompt.query.all()
+  return prompt_schema.dumps(prompts, many=True)
+
+@app.route('/api/prompts/<prompt_id>')
+def get_prompt_by_id(prompt_id):
+  prompt_schema = PromptSchema()
+  prompt = Prompt.query.filter(Prompt.id == prompt_id).first()
+
+  if prompt:
+    return prompt_schema.dumps(prompt)
+  else:
+    raise NotFound("Could not find prompt with id of '{}'".format(prompt_id))
