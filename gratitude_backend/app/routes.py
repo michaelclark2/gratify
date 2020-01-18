@@ -109,3 +109,30 @@ def handle_entries(entry_id):
     Entry.query.filter(Entry.id == entry_id).delete()
     db.session.commit()
     return 'Successfully deleted entry {}'.format(entry_id)
+
+@app.route('/api/gratitudes/add', methods=['POST'])
+def add_gratitude():
+  grat = json.loads(request.data)
+  new_grat = Gratitude(response=grat['response'])
+  user = User.query.filter(User.id == grat['user_id']).first()
+  user.grats.append(new_grat)
+  db.session.add(user)
+  db.session.commit()
+  return 'Added gratitude'
+
+@app.route('/api/gratitudes/<grat_id>', methods=['GET', 'PUT', 'DELETE'])
+def handle_gratitudes(grat_id):
+  if request.method == 'GET':
+    grat_schema = GratitudeSchema()
+    grat = Gratitude.query.filter(Gratitude.id == grat_id).first()
+    return grat_schema.dumps(grat)
+  elif request.method == 'PUT':
+    grat = Gratitude.query.filter(Gratitude.id == grat_id).first()
+    grat.response = json.loads(request.data)['response']
+    db.session.add(grat)
+    db.session.commit()
+    return 'Successfully edited gratitude {}'.format(grat.id)
+  elif request.method == 'DELETE':
+    Gratitude.query.filter(Gratitude.id == grat_id).delete()
+    db.session.commit()
+    return 'Successfully deleted gratitude {}'.format(grat_id)
