@@ -120,3 +120,19 @@ def add_gratitude():
   db.session.commit()
   return 'Added gratitude'
 
+@app.route('/api/gratitudes/<grat_id>', methods=['GET', 'PUT', 'DELETE'])
+def handle_gratitudes(grat_id):
+  if request.method == 'GET':
+    grat_schema = GratitudeSchema()
+    grat = Gratitude.query.filter(Gratitude.id == grat_id).first()
+    return grat_schema.dumps(grat)
+  elif request.method == 'PUT':
+    grat = Gratitude.query.filter(Gratitude.id == grat_id).first()
+    grat.response = json.loads(request.data)['response']
+    db.session.add(grat)
+    db.session.commit()
+    return 'Successfully edited gratitude {}'.format(grat.id)
+  elif request.method == 'DELETE':
+    Gratitude.query.filter(Gratitude.id == grat_id).delete()
+    db.session.commit()
+    return 'Successfully deleted gratitude {}'.format(grat_id)
