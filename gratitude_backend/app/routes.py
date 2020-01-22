@@ -40,7 +40,7 @@ def get_user_by_firebase_id():
   else:
     raise NotFound("Could not find user with firebase_id of '{}'".format(fb_id))
 
-@app.route('/api/users', methods=['POST'])
+@app.route('/api/users/add', methods=['POST'])
 def add_new_user():
   fb_id = json.loads(request.data)['firebase_id']
   try:
@@ -60,6 +60,22 @@ def edit_user(user_id):
   elif request.method == 'PUT':
     user = User.query.get(user_id)
     return 'Editing user {}'.format(user_id)
+
+@app.route('/api/users/<user_id>/entries')
+def get_user_prompts(user_id):
+  entry_schema = EntrySchema()
+
+  user = User.query.get(user_id)
+
+  return entry_schema.dumps(user.entries, many=True)
+
+@app.route('/api/users/<user_id>/gratitudes')
+def get_user_grats(user_id):
+  grat_schema = GratitudeSchema()
+
+  user = User.query.get(user_id)
+
+  return grat_schema.dumps(user.grats, many=True)
 
 @app.route('/api/prompts')
 def get_all_prompts():
