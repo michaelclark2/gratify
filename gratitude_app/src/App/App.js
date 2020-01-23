@@ -1,13 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from 'react';
-import { AsyncStorage } from 'react-native';
 
 import {
   mapping,
@@ -15,95 +6,23 @@ import {
   dark,
 } from '@eva-design/eva';
 
-import {
-  ApplicationProvider,
-  Layout,
-  Text,
-  Button,
-} from 'react-native-ui-kitten';
+import { ApplicationProvider } from 'react-native-ui-kitten';
 
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import firebase from 'react-native-firebase';
 
+import HomeScreen from '../screens/HomeScreen';
 
-class OtherScreen extends React.Component {
-  state = {
-    isAuthed: false,
-    user: null
-  }
+import RegisterScreen from '../screens/RegisterScreen';
+import SignInScreen from '../screens/SignInScreen';
+import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 
-  render () {
-    return (
-      <Layout>
-        <Text>You are now on another screen {this.state.isAuthed ? this.state.user.uid : ""}</Text>
-        <Button>yep</Button>
-      </Layout>
-    )
-  }
-}
 
-class HomeScreen extends React.Component {
-  render () {
-    return (
-      <Layout level="2">
-        <Text>ayelmao</Text>
-        <Layout style={{padding: 20}}>
-          <Button onPress={(e) => firebase.auth().signOut()}>wut?</Button>
-        </Layout>
-      </Layout>
-    )
-  }
-}
-
-class SignInScreen extends React.Component {
-  signIn = (e) => {
-    firebase.auth().signInWithEmailAndPassword("test@test.com", "password");
-  }
-  render () {
-    return (
-      <Layout>
-        <Text>Sign In</Text>
-        <Button onPress={this.signIn}>DO IT</Button>
-      </Layout>
-    )
-  }
-}
-
-class RegisterScreen extends React.Component {
-  render () {
-    return (
-      <Layout>
-        <Text>New User</Text>
-      </Layout>
-    )
-  }
-}
-
-class AuthLoadingScreen extends React.Component {
-  componentDidMount() {
-    this.checkAuthStatus();
-  }
-
-  checkAuthStatus = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      this.props.navigation.navigate(user ? 'App' : 'Auth')
-    })
-  }
-
-  render () {
-    return (
-      <Layout>
-        <Text>Loading Auth</Text>
-      </Layout>
-    )
-  }
-}
 
 const RootStack = createStackNavigator({
   Home: HomeScreen,
-  OtherScreen: OtherScreen
 });
 
 const AuthStack = createStackNavigator({
@@ -146,7 +65,7 @@ class App extends React.Component {
       console.log(msg);
     });
 
-    firebase.messaging().getToken().then(token => console.log(token)).catch(console.error)
+    firebase.messaging().getToken().then(token => console.log('token', token)).catch(console.error)
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
       console.log(notification)
