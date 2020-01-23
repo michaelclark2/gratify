@@ -36,10 +36,10 @@ class SignInScreen extends React.Component {
       <Layout height={'100%'} level="4">
         <Title>Sign In</Title>
         <Layout level="4" style={style.signInScreen}>
-          <Input style={style.inputField} value={this.state.email} onChangeText={(email) => this.setState({email})}/>
-          <Input style={style.inputField} secureTextEntry={true} value={this.state.password} onChangeText={(password) => this.setState({password})}/>
+          <Input style={style.inputField} placeholder="Email" value={this.state.email} onChangeText={(email) => this.setState({email})}/>
+          <Input style={style.inputField} placeholder="Password" secureTextEntry={true} value={this.state.password} onChangeText={(password) => this.setState({password})}/>
           {
-            this.state.isError ? (<Text>{this.state.error}</Text>) : null
+            this.state.isError ? (<Text status="danger">{this.state.error}</Text>) : null
           }
           <Button style={style.inputField} onPress={this.signIn}>Sign In</Button>
           <Button style={style.inputField} onPress={this.sendToRegister} status="info" >Don't have an account?</Button>

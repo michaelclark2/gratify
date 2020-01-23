@@ -29,7 +29,7 @@ const AuthStack = createStackNavigator({
   SignIn: SignInScreen,
   Register: RegisterScreen,
 }, {
-  headerMode: 'screen'
+  headerMode: 'none'
 });
 
 const AppContainer = createAppContainer(
