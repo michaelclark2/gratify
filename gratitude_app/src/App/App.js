@@ -48,8 +48,10 @@ const AppContainer = createAppContainer(
 class App extends React.Component {
   state = {
     hasNotifications: false,
-    gotMessage: false
+    gotMessage: false,
+    user_id: 0,
   }
+
   componentDidMount () {
     firebase.messaging().hasPermission()
       .then(enabled => {

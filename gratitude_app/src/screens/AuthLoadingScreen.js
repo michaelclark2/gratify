@@ -5,6 +5,7 @@ import {
 } from 'react-native-ui-kitten';
 
 import firebase from 'react-native-firebase';
+import { ActivityIndicator } from 'react-native';
 
 class AuthLoadingScreen extends React.Component {
   componentDidMount() {
@@ -20,7 +21,7 @@ class AuthLoadingScreen extends React.Component {
   render () {
     return (
       <Layout>
-        <Text>Loading Auth</Text>
+        <ActivityIndicator size="large"/>
       </Layout>
     )
   }

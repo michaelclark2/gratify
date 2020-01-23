@@ -10,6 +10,7 @@ import firebase from 'react-native-firebase';
 
 
 import Title from '../components/Title/Title';
+import authData from '../api/authData';
 
 class RegisterScreen extends React.Component {
   static navigationOptions = {
@@ -24,9 +25,13 @@ class RegisterScreen extends React.Component {
   signUp = (e) => {
     const { email, password } = this.state;
     firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(user => {
+      .then(res => {
         // POST UID TO API HERE
-        console.log('user.uid', user.uid)
+        authData.addNewUser(res.user.uid)
+          .catch(err => {
+            this.setState({isError: true, error: err.message});
+            res.user.delete();
+          })
       })
       .catch(err => {
         this.setState({isError: true, error: err.message})
