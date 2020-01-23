@@ -23,11 +23,6 @@ def handle_not_found(error):
   response.status_code = error.status_code
   return response
 
-@app.route('/')
-@app.route('/index')
-def index():
-  return 'ayelmao'
-
 @app.route('/api/users/me', methods=['GET'])
 def get_user_by_firebase_id():
   user_schema = UserSchema()
@@ -86,7 +81,7 @@ def get_all_prompts():
 @app.route('/api/prompts/<prompt_id>')
 def get_prompt_by_id(prompt_id):
   prompt_schema = PromptSchema()
-  prompt = Prompt.query.filter(Prompt.id == prompt_id).first()
+  prompt = Prompt.query.get(prompt_id)
 
   if prompt:
     return prompt_schema.dumps(prompt)
@@ -98,8 +93,8 @@ def add_new_entry():
   entry_json = json.loads(request.data)
   new_entry = Entry(response=entry_json['response'])
 
-  user = User.query.filter(User.id == entry_json['user_id']).first()
-  prompt = Prompt.query.filter(Prompt.id == entry_json['prompt_id']).first()
+  user = User.query.get(entry_json['user_id'])
+  prompt = Prompt.query.get(entry_json['prompt_id'])
   new_entry.user = user
   new_entry.prompt = prompt
 
@@ -111,11 +106,11 @@ def add_new_entry():
 def handle_entries(entry_id):
   if request.method == 'GET':
     entry_schema = EntrySchema()
-    entry = Entry.query.filter(Entry.id == entry_id).first()
+    entry = Entry.query.get(entry_id)
     return entry_schema.dumps(entry)
 
   elif request.method == 'PUT':
-    entry = Entry.query.filter(Entry.id == entry_id).first()
+    entry = Entry.query.get(entry_id)
     entry.response = json.loads(request.data)['response']
     db.session.add(entry)
     db.session.commit()
@@ -130,7 +125,7 @@ def handle_entries(entry_id):
 def add_gratitude():
   grat = json.loads(request.data)
   new_grat = Gratitude(response=grat['response'])
-  user = User.query.filter(User.id == grat['user_id']).first()
+  user = User.query.get(grat['user_id'])
   user.grats.append(new_grat)
   db.session.add(user)
   db.session.commit()
@@ -140,10 +135,10 @@ def add_gratitude():
 def handle_gratitudes(grat_id):
   if request.method == 'GET':
     grat_schema = GratitudeSchema()
-    grat = Gratitude.query.filter(Gratitude.id == grat_id).first()
+    grat = Gratitude.query.get(grat_id)
     return grat_schema.dumps(grat)
   elif request.method == 'PUT':
-    grat = Gratitude.query.filter(Gratitude.id == grat_id).first()
+    grat = Gratitude.query.get(grat_id)
     grat.response = json.loads(request.data)['response']
     db.session.add(grat)
     db.session.commit()
