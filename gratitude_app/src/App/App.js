@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { AsyncStorage } from 'react-native';
 
 import {
   mapping,
@@ -22,7 +22,7 @@ import {
   Button,
 } from 'react-native-ui-kitten';
 
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import firebase from 'react-native-firebase';
@@ -34,12 +34,6 @@ class OtherScreen extends React.Component {
     user: null
   }
 
-  componentDidMount () {
-    firebase.auth().signInWithEmailAndPassword("test@test.com", "password")
-      .then((user) => {
-        this.setState({user: user.user, isAuthed: true})
-      })
-  }
   render () {
     return (
       <Layout>
@@ -56,8 +50,52 @@ class HomeScreen extends React.Component {
       <Layout level="2">
         <Text>ayelmao</Text>
         <Layout style={{padding: 20}}>
-          <Button onPress={(e) => this.props.navigation.navigate('OtherScreen')}>wut?</Button>
+          <Button onPress={(e) => firebase.auth().signOut()}>wut?</Button>
         </Layout>
+      </Layout>
+    )
+  }
+}
+
+class SignInScreen extends React.Component {
+  signIn = (e) => {
+    firebase.auth().signInWithEmailAndPassword("test@test.com", "password");
+  }
+  render () {
+    return (
+      <Layout>
+        <Text>Sign In</Text>
+        <Button onPress={this.signIn}>DO IT</Button>
+      </Layout>
+    )
+  }
+}
+
+class RegisterScreen extends React.Component {
+  render () {
+    return (
+      <Layout>
+        <Text>New User</Text>
+      </Layout>
+    )
+  }
+}
+
+class AuthLoadingScreen extends React.Component {
+  componentDidMount() {
+    this.checkAuthStatus();
+  }
+
+  checkAuthStatus = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      this.props.navigation.navigate(user ? 'App' : 'Auth')
+    })
+  }
+
+  render () {
+    return (
+      <Layout>
+        <Text>Loading Auth</Text>
       </Layout>
     )
   }
@@ -68,7 +106,23 @@ const RootStack = createStackNavigator({
   OtherScreen: OtherScreen
 });
 
-const AppContainer = createAppContainer(RootStack);
+const AuthStack = createStackNavigator({
+  SignIn: SignInScreen,
+  Register: RegisterScreen,
+})
+
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthLoading: AuthLoadingScreen,
+      App: RootStack,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'AuthLoading',
+    }
+  )
+);
 
 class App extends React.Component {
   state = {
