@@ -19,16 +19,18 @@ import RegisterScreen from '../screens/RegisterScreen';
 import SignInScreen from '../screens/SignInScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 
-
-
 const RootStack = createStackNavigator({
   Home: HomeScreen,
+}, {
+  initialRouteName: 'Home'
 });
 
 const AuthStack = createStackNavigator({
   SignIn: SignInScreen,
   Register: RegisterScreen,
-})
+}, {
+  headerMode: 'screen'
+});
 
 const AppContainer = createAppContainer(
   createSwitchNavigator(
