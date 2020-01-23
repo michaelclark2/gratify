@@ -5,7 +5,7 @@ import {
   Button,
   Input
 } from 'react-native-ui-kitten';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 
 
@@ -25,13 +25,17 @@ class RegisterScreen extends React.Component {
   signUp = (e) => {
     const { email, password } = this.state;
     firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(res => {
-        // POST UID TO API HERE
-        authData.addNewUser(res.user.uid)
-          .catch(err => {
-            this.setState({isError: true, error: err.message});
-            res.user.delete();
-          })
+      .then(cred => {
+        AsyncStorage.setItem('firebase_id', cred.user.uid)
+          .then(() => {
+            authData.addNewUser(cred.user.uid)
+              .then(() => {
+              })
+              .catch(err => {
+                this.setState({isError: true, error: err.message});
+                cred.user.delete();
+              })
+          });
       })
       .catch(err => {
         this.setState({isError: true, error: err.message})

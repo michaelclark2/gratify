@@ -8,4 +8,8 @@ const addNewUser = async (firebase_id) => {
     });
 }
 
-export default { addNewUser };
+const getUserByFirebaseId = async (firebase_id) => {
+  return await fetch(`${apiUrl}/api/users/me?firebase_id=${firebase_id}`).then(res => res.json());
+}
+
+export default { addNewUser, getUserByFirebaseId };

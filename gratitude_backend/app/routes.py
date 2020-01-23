@@ -32,7 +32,7 @@ def index():
 def get_user_by_firebase_id():
   user_schema = UserSchema()
 
-  fb_id = json.loads(request.data)['firebase_id']
+  fb_id = request.args['firebase_id']
   user = db.session.query(User).filter(User.firebase_id == fb_id).first()
 
   if user:
