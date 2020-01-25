@@ -8,14 +8,14 @@ import {
 import firebase from 'react-native-firebase';
 import authData from '../api/authData';
 import { AsyncStorage } from 'react-native';
+import Title from '../components/Title/Title';
 
 class HomeScreen extends React.Component {
-
   state = {
     user: {}
   }
 
-  componentDidMount() {
+  loadUser = () => {
     AsyncStorage.getItem('firebase_id').then(firebase_id => {
       authData.getUserByFirebaseId(firebase_id)
         .then(user => {
@@ -23,12 +23,26 @@ class HomeScreen extends React.Component {
         })
     })
   }
+
+  componentDidMount() {
+    this.loadUser();
+  }
+
   render () {
+    const { user } = this.state;
     return (
       <Layout level="2">
-        <Text>ayelmao</Text>
-        <Text>{this.state.user.id}</Text>
-        <Text>{this.state.user.created_at}</Text>
+        <Title>Welcome to Gratify</Title>
+        {
+          user && user.created_at ? (
+            <Layout>
+              <Text>{user.id}</Text>
+              <Text>{user.created_at}</Text>
+              <Text>Gratitudes: {user.grats.length}</Text>
+              <Text>Entries: {user.entries.length}</Text>
+            </Layout>
+          ) : null
+        }
         <Layout style={{padding: 20}}>
           <Button onPress={(e) => firebase.auth().signOut()}>wut?</Button>
         </Layout>

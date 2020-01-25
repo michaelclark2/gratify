@@ -49,7 +49,6 @@ class App extends React.Component {
   state = {
     hasNotifications: false,
     gotMessage: false,
-    user_id: 0,
   }
 
   componentDidMount () {
