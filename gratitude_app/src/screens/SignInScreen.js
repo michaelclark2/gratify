@@ -4,7 +4,7 @@ import {
   Input,
   Text,
   Button,
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 import firebase from 'react-native-firebase';
 
 import Title from '../components/Title/Title';

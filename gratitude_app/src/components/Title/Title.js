@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Text
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
 
 class Title extends React.Component {

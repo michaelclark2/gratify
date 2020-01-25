@@ -6,7 +6,7 @@ import {
   dark,
 } from '@eva-design/eva';
 
-import { ApplicationProvider } from 'react-native-ui-kitten';
+import { ApplicationProvider } from '@ui-kitten/components';
 
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';

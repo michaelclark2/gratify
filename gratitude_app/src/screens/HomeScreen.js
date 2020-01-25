@@ -3,7 +3,7 @@ import {
   Layout,
   Text,
   Button,
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 
 import firebase from 'react-native-firebase';
 import authData from '../api/authData';
@@ -12,7 +12,10 @@ import Title from '../components/Title/Title';
 
 class HomeScreen extends React.Component {
   state = {
-    user: {}
+    user: {
+      grats: [],
+      entries: []
+    }
   }
 
   loadUser = () => {
@@ -32,7 +35,7 @@ class HomeScreen extends React.Component {
     const { user } = this.state;
     return (
       <Layout level="2">
-        <Title>Welcome to Gratify</Title>
+        <Title>Gratify</Title>
         {
           user && user.created_at ? (
             <Layout>

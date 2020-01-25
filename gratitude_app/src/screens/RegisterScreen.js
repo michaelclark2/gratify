@@ -4,7 +4,7 @@ import {
   Text,
   Button,
   Input
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 import { StyleSheet, AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 

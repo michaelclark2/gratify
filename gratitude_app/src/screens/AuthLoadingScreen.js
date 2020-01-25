@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Layout,
   Text,
-} from 'react-native-ui-kitten';
+} from '@ui-kitten/components';
 
 import firebase from 'react-native-firebase';
 import { ActivityIndicator } from 'react-native';
