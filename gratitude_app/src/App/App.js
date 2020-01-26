@@ -1,13 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from 'react';
-import { useState, useEffect } from 'react';
 
 import {
   mapping,
@@ -15,66 +6,51 @@ import {
   dark,
 } from '@eva-design/eva';
 
-import {
-  ApplicationProvider,
-  Layout,
-  Text,
-  Button,
-} from 'react-native-ui-kitten';
+import { ApplicationProvider } from '@ui-kitten/components';
 
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import firebase from 'react-native-firebase';
 
+import HomeScreen from '../screens/HomeScreen';
 
-class OtherScreen extends React.Component {
-  state = {
-    isAuthed: false,
-    user: null
-  }
-
-  componentDidMount () {
-    firebase.auth().signInWithEmailAndPassword("test@test.com", "password")
-      .then((user) => {
-        this.setState({user: user.user, isAuthed: true})
-      })
-  }
-  render () {
-    return (
-      <Layout>
-        <Text>You are now on another screen {this.state.isAuthed ? this.state.user.uid : ""}</Text>
-        <Button>yep</Button>
-      </Layout>
-    )
-  }
-}
-
-class HomeScreen extends React.Component {
-  render () {
-    return (
-      <Layout level="2">
-        <Text>ayelmao</Text>
-        <Layout style={{padding: 20}}>
-          <Button onPress={(e) => this.props.navigation.navigate('OtherScreen')}>wut?</Button>
-        </Layout>
-      </Layout>
-    )
-  }
-}
+import RegisterScreen from '../screens/RegisterScreen';
+import SignInScreen from '../screens/SignInScreen';
+import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 
 const RootStack = createStackNavigator({
   Home: HomeScreen,
-  OtherScreen: OtherScreen
+}, {
+  initialRouteName: 'Home'
 });
 
-const AppContainer = createAppContainer(RootStack);
+const AuthStack = createStackNavigator({
+  SignIn: SignInScreen,
+  Register: RegisterScreen,
+}, {
+  headerMode: 'none'
+});
+
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthLoading: AuthLoadingScreen,
+      App: RootStack,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'AuthLoading',
+    }
+  )
+);
 
 class App extends React.Component {
   state = {
     hasNotifications: false,
-    gotMessage: false
+    gotMessage: false,
   }
+
   componentDidMount () {
     firebase.messaging().hasPermission()
       .then(enabled => {
@@ -92,7 +68,7 @@ class App extends React.Component {
       console.log(msg);
     });
 
-    firebase.messaging().getToken().then(token => console.log(token)).catch(console.error)
+    firebase.messaging().getToken().then(token => console.log('token', token)).catch(console.error)
 
     this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
       console.log(notification)
@@ -114,7 +90,7 @@ class App extends React.Component {
     const theme = this.state.hasNotifications ? dark : light;
     return (
       <ApplicationProvider mapping={mapping} theme={theme}>
-        <AppContainer/>
+        <AppContainer screenProps={{theme}}/>
       </ApplicationProvider>
     );
   }
