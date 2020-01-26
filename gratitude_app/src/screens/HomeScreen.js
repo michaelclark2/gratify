@@ -9,8 +9,10 @@ import firebase from 'react-native-firebase';
 import authData from '../api/authData';
 import { AsyncStorage } from 'react-native';
 import Title from '../components/Title/Title';
+import ThemedScreen from './ThemedScreen';
 
-class HomeScreen extends React.Component {
+class HomeScreen extends ThemedScreen {
+
   state = {
     user: {
       grats: [],

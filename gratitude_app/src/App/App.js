@@ -90,7 +90,7 @@ class App extends React.Component {
     const theme = this.state.hasNotifications ? dark : light;
     return (
       <ApplicationProvider mapping={mapping} theme={theme}>
-        <AppContainer/>
+        <AppContainer screenProps={{theme}}/>
       </ApplicationProvider>
     );
   }
