@@ -6,21 +6,22 @@ import {
   dark,
 } from '@eva-design/eva';
 
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import firebase from 'react-native-firebase';
 
-import HomeScreen from '../screens/HomeScreen';
+import HomeTabScreen from '../screens/HomeTabScreen';
 
 import RegisterScreen from '../screens/RegisterScreen';
 import SignInScreen from '../screens/SignInScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 
 const RootStack = createStackNavigator({
-  Home: HomeScreen,
+  Home: HomeTabScreen,
 }, {
   initialRouteName: 'Home'
 });
@@ -89,9 +90,12 @@ class App extends React.Component {
   render () {
     const theme = this.state.hasNotifications ? dark : light;
     return (
-      <ApplicationProvider mapping={mapping} theme={theme}>
-        <AppContainer screenProps={{theme}}/>
-      </ApplicationProvider>
+      <React.Fragment>
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider mapping={mapping} theme={theme}>
+          <AppContainer screenProps={{theme}}/>
+        </ApplicationProvider>
+      </React.Fragment>
     );
   }
 };

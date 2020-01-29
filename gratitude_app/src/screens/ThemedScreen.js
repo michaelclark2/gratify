@@ -7,8 +7,8 @@ class ThemedScreen extends React.Component {
     return {
       headerTintColor: theme[theme['text-basic-color'].replace('$', '')],
       headerStyle : {
-        backgroundColor: theme[theme['background-basic-color-4'].replace('$', '')]
-      }
+        backgroundColor: theme[theme['background-basic-color-2'].replace('$', '')]
+      },
     }
   }
 }

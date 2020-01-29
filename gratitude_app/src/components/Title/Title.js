@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  Text
+  Text,
+  withStyles
 } from '@ui-kitten/components';
 import { StyleSheet } from 'react-native';
 
@@ -24,4 +25,4 @@ const style = StyleSheet.create({
 });
 
 
-export default Title;
+export default withStyles(Title);
