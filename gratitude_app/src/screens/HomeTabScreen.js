@@ -29,7 +29,7 @@ const TabBar = ({ navigation }) => {
       case 'Entries':
         return 'book';
       case 'Options':
-        return 'heart';
+        return 'settings-2';
     }
   }
   const getIconForRoute = (routeName, isSelected) => {
@@ -41,10 +41,12 @@ const TabBar = ({ navigation }) => {
     <SafeAreaView>
       <BottomNavigation selectedIndex={navigation.state.index} onSelect={onSelect}>
         {
+
           navigation.state.routes.map(r => {
             const {routes, index} = navigation.state;
-            const iconName = getIconForRoute(r.routeName, routes[index].routeName === r.routeName);
-            return <BottomNavigationTab title={r.routeName} icon={iconName} key={r.routeName} poop='boob'/>
+            const isActiveRoute = routes[index].routeName === r.routeName;
+            const icon = getIconForRoute(r.routeName, isActiveRoute);
+            return <BottomNavigationTab title={r.routeName} icon={icon} key={r.routeName} />
           })
         }
       </BottomNavigation>
