@@ -11,7 +11,6 @@ class GratitudeScreen extends React.Component {
     return (
       <Layout>
         <Title>Gratitudes</Title>
-        <Icon name="star" height={30} fill="orange"  />
       </Layout>
     );
   }
